@@ -1,0 +1,20 @@
+serpapi:
+  api_key: SERPAPI_KEY
+  engine: "google_jobs"
+  q: "data scientist"
+  location: "United States"
+  gl: "us"
+  hl: "en"
+  chips: "date_posted:today"   # optional; deprecated but still works
+
+budget:
+  min_requests: 3
+  max_requests: 12
+  weekday_mult:
+    Mon: 1.25
+    Tue: 1.15
+    Wed: 1.05
+    Thu: 1.00
+    Fri: 1.00
+    Sat: 0.50
+    Sun: 0.50
