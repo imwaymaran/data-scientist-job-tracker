@@ -15,6 +15,30 @@ Automated scraper that collects **Data Scientist** job postings from **Google Jo
 5. `notify.py` sends a Telegram message.
 
 ---
+## Repository Structure
+
+```
+data-scientist-job-tracker/
+│
+├── config/
+│   ├── settings.yaml            # global settings (query, region, budget, etc.)
+│   └── normalize_schema.json    # defines core job fields to keep
+│
+├── source/
+│   ├── __init__.py
+│   ├── account.py               # fetches SerpApi account info (quota, usage)
+│   ├── config_loader.py         # loads YAML/JSON config and builds SerpApi params
+│   ├── policies.py              # calculates daily API request cap and detects resets
+│   ├── scraper.py               # iteratively fetches jobs via SerpApi
+│   └── normalize.py             # cleans and standardizes raw job records
+│
+└── data/
+    ├── raw/                     # raw SerpApi JSON dumps
+    └── processed/               # cleaned and deduplicated JSONL or parquet
+
+```
+
+---
 
 ## Data Dictionary
 
