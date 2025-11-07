@@ -1,0 +1,16 @@
+{
+  "core_keys": [
+    "title",
+    "company_name",
+    "location",
+    "via",
+    "share_link",
+    "thumbnail",
+    "extensions",
+    "detected_extensions",
+    "description",
+    "job_highlights",
+    "apply_options",
+    "job_id"
+  ]
+}
