@@ -20,9 +20,9 @@ Automated scraper that collects **Data Scientist** job postings from **Google Jo
 
 | Field | Type | Description |
 |--------|------|-------------|
-| `scrape_date` | `string (YYYY-MM-DD)` | Date when the job was collected. |
-| `job_id` | `string \| None` | Original identifier from Google Jobs / SerpApi (if provided). |
-| `job_key` | `string` | Internal deterministic key for deduplication (based on `job_id`, description hash, or title/company/location). |
+| `scrape_date` | `string (YYYY-MM-DD)` | Date when the job was collected |
+| `job_id` | `string \| None` | Original identifier from Google Jobs / SerpApi (if provided) |
+| `job_key` | `string` | Internal deterministic key for deduplication (based on `job_id`, description hash, or title/company/location) |
 | `title` | `string \| None` | Job title as displayed in Google Jobs |
 | `company` | `string \| None` | Company name |
 | `location` | `string \| None` | Job location text (city, state, or “Remote”) |
