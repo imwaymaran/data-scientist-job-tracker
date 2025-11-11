@@ -36,5 +36,4 @@ def build_serpapi_params(settings: dict, api_key: str) -> dict:
         "chips": s.get("chips"),
         "api_key": api_key
     }
-    
     return params
