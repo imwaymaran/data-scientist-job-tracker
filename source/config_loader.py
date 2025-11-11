@@ -24,7 +24,7 @@ def get_serpapi_key(env_var: str = "SERPAPI_KEY") -> str:
     return key
 
 # ---------- PARAM BUILDER ----------
-def build_serpapi_params(settings: dict) -> dict:
+def build_serpapi_params(settings: dict, api_key: str) -> dict:
     """Build a SerpApi-ready params dict from YAML settings."""
     s = settings["serpapi"]
     params = {
@@ -34,7 +34,7 @@ def build_serpapi_params(settings: dict) -> dict:
         "gl": s.get("gl", "us"),
         "hl": s.get("hl", "en"),
         "chips": s.get("chips"),
-        "api_key": get_serpapi_key("SERPAPI_KEY"),
+        "api_key": api_key
     }
     
     return params
