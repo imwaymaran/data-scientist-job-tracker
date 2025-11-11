@@ -1,15 +1,19 @@
 from datetime import date
 from math import ceil
 
+WEEKDAY_NAMES = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+
 def calculate_cap(
     remaining: int,
     last_reset: date,
-    today: date,
+    today: str,
     budget: dict,
     window_days: int = 30,
     carryover_requests: int = 0,
 ) -> int:
     """Calculate today's request cap based on remaining quota and weekday multiplier."""
+    today = date.fromisoformat(today)
+    
     min_requests = budget["min_requests"]
     max_requests = budget["max_requests"]
     weekday_mult = budget["weekday_mult"]
@@ -18,7 +22,7 @@ def calculate_cap(
     days_left = max(1, window_days - max(0, days_since))
 
     base_per_day = ceil(remaining / days_left)
-    mult = weekday_mult.get(today.strftime("%a"), 1.0)
+    mult = weekday_mult.get(WEEKDAY_NAMES[today.weekday()], 1.0)
 
     today_cap = round(base_per_day * mult + carryover_requests)
     return max(min_requests, min(today_cap, max_requests, remaining))
