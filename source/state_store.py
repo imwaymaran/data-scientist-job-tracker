@@ -2,6 +2,8 @@ import sqlite3
 from pathlib import Path
 from datetime import date, datetime
 
+DEFAULT_STATE_DB = "data/state/run_state.sqlite"
+
 SCHEMA = """
 CREATE TABLE IF NOT EXISTS run_state (
     key   TEXT PRIMARY KEY,
@@ -15,7 +17,7 @@ INSERT OR IGNORE INTO run_state (key, value) VALUES
 ('carryover_requests', '0');
 """
 
-def open_state_db(db_path: str, today: str) -> sqlite3.Connection:
+def open_state_db(today: str, db_path: str | Path = DEFAULT_STATE_DB) -> sqlite3.Connection:
     """Open the SQLite state DB, ensure schema and default keys."""
     path = Path(db_path)
     path.parent.mkdir(parents=True, exist_ok=True)
@@ -61,5 +63,5 @@ def update_carryover(conn: sqlite3.Connection, carryover: int):
     with conn:
         conn.execute(
             "UPDATE run_state SET value=? WHERE key='carryover_requests'",
-            (str(int(carryover)),),
+            (str(carryover),),
         )
