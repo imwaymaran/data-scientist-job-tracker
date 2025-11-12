@@ -1,7 +1,10 @@
+from source.logger import get_logger
+logger = get_logger()
+
 def build_run_summary(
     today: str | None,
     cap: int,
-    remaining: int,
+    remaining_after: int,
     scrape_state: dict,
     seen_stats: dict,
     carryover: int,
@@ -12,7 +15,7 @@ def build_run_summary(
     inserted = seen_stats.get("inserted", 0)
     touched = seen_stats.get("touched", 0)
     reason = scrape_state.get("reason", "n/a")
-    remaining_quota = max(0, remaining - used)
+    remaining_quota = max(0, remaining_after - used)
 
     return {
         "date": today,
@@ -24,17 +27,19 @@ def build_run_summary(
         "uniques": inserted,
         "carryover": carryover,
         "remaining_quota": remaining_quota
-    }
+    }  
     
 def print_run_summary(summary: dict):
-    """Pretty-print a short debug summary of the daily run."""
-    print("\nRUN SUMMARY")
-    print(f"Date: {summary.get('date', 'n/a')}")
-    print(f"Cap: {summary.get('cap', 0)}")
-    print(f"Requests used: {summary.get('requests_used', 0)}")
-    print(f"Stop reason: {summary.get('stop_reason', 'n/a')}")
-    print(f"Jobs scraped: {summary.get('total_jobs', 0)}")
-    print(f"Normalized: {summary.get('normalized', 0)} | Uniques: {summary.get('uniques', 0)}")
-    print(f"Carryover: {summary.get('carryover', 0)}")
-    print(f"Remaining quota: {summary.get('remaining_quota', 0)}")
-    print("-" * 35)    
+    """Log a formatted one-line summary of the daily pipeline run."""
+    logger.info(
+        "SUMMARY | "
+        f"date={summary.get('date')} "
+        f"cap={summary.get('cap')} "
+        f"used={summary.get('requests_used')} "
+        f"reason={summary.get('stop_reason')} "
+        f"jobs={summary.get('total_jobs')} "
+        f"normalized={summary.get('normalized')} "
+        f"uniques={summary.get('uniques')} "
+        f"carryover={summary.get('carryover')} "
+        f"remaining quota={summary.get('remaining_quota')} "
+    )
