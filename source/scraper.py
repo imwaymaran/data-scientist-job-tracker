@@ -1,4 +1,7 @@
-import requests, time
+import requests
+import time
+from source.logger import get_logger
+logger = get_logger()
 
 ENDPOINT = "https://serpapi.com/search.json"
 
@@ -25,9 +28,11 @@ def fetch_jobs(params: dict, today_cap: int, delay: float = 0.3) -> tuple[list[d
             r.raise_for_status()
         except requests.exceptions.Timeout:
             reason = f"timeout_page_{used+1}"
+            logger.warning(reason)
             break
         except requests.RequestException as e:
             reason = f"error_page_{used+1}:{e}"
+            logger.error(reason)
             break
 
         used += 1
@@ -36,6 +41,7 @@ def fetch_jobs(params: dict, today_cap: int, delay: float = 0.3) -> tuple[list[d
 
         if not jobs:
             reason = f"empty_page_{used}"
+            logger.info(f"No jobs on page {used}")
             break
 
         pagination = data.get("serpapi_pagination") or {}
@@ -45,12 +51,15 @@ def fetch_jobs(params: dict, today_cap: int, delay: float = 0.3) -> tuple[list[d
 
         if len(jobs) < 10:
             reason = f"tail_page_{used}"
+            logger.info(f"Tail page with {len(jobs)} jobs at page {used}")
             break
         if not token:
             reason = f"no_next_page_{used}"
+            logger.info(f"No next_page_token after page {used}")
             break
 
         time.sleep(delay)
 
     stats = {"requests_used": used, "total_jobs": len(all_jobs), "reason": reason}
+    logger.info(f"Fetched pages={used}, jobs={len(all_jobs)}, reason={reason}")
     return all_jobs, stats
