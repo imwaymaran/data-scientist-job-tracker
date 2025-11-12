@@ -2,6 +2,8 @@ from pathlib import Path
 
 import sqlite3
 
+DEFAULT_SEEN_DB = "data/state/seen_jobs.sqlite"
+
 SCHEMA = """
 CREATE TABLE IF NOT EXISTS job_seen (
     job_key TEXT PRIMARY KEY,
@@ -10,15 +12,15 @@ CREATE TABLE IF NOT EXISTS job_seen (
 );
 """
 
-def open_seen_db(db_path: str) -> sqlite3.Connection:
+def open_seen_db(db_path: str | Path = DEFAULT_SEEN_DB) -> sqlite3.Connection:
     """
     Open (and initialize if needed) the SQLite database for seen jobs.
     Ensures schema exists and returns a ready-to-use connection.
     """
     path = Path(db_path)
     path.parent.mkdir(parents=True, exist_ok=True)
+    conn = sqlite3.connect(path)
     
-    conn = sqlite3.connect(db_path)
     conn.execute("PRAGMA journal_mode=WAL;")
     conn.execute("PRAGMA synchronous=NORMAL;")
     
