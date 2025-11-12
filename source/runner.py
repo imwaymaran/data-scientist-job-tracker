@@ -12,6 +12,19 @@ from source.logger import get_logger
 logger = get_logger()
 
 def main():
+    """
+    Run the full Data Scientist Job Tracker pipeline.
+
+    Steps:
+    1. Load configuration and API key.
+    2. Fetch account info and compute request cap.
+    3. Scrape job listings from SerpApi.
+    4. Normalize and deduplicate results.
+    5. Save raw JSON and processed Parquet.
+    6. Update persistent state and summarize run.
+
+    Handles logging, errors, and state persistence automatically.
+    """
     logger.info("Run started")
     
     today_iso = date.today().isoformat()
