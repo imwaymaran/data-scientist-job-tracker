@@ -4,11 +4,14 @@
 Daily pipeline that collects **Google Jobs** results for **“data scientist”** in the **United States** via **SerpApi**, normalizes fields, de-duplicates across runs with a SQLite state file, and saves daily outputs for later analysis.
 
 ## Architecture
-- **Scraper:** fetches paginated results via SerpApi  
-- **Normalizer:** standardizes structure and fields  
-- **Seen Store:** deduplicates jobs via SQLite  
-- **Policies:** controls request budget and reset logic  
-- **Config:** YAML-based settings + environment secrets  
+- **Scraper:** Fetches paginated job results via SerpApi with rate control  
+- **Normalizer:** Cleans and standardizes raw fields into a uniform schema  
+- **Seen Store:** Tracks and deduplicates jobs using a local SQLite database  
+- **Policies:** Calculates daily request caps and detects quota resets  
+- **State Store:** Persists last reset date and carryover request counts  
+- **Storage:** Saves raw JSON and processed Parquet outputs  
+- **Logger:** Centralized structured logging for debugging and monitoring  
+- **Config:** YAML-based settings and environment-managed secrets   
 
 ## Repository Layout
 - `source/` – core modules  
@@ -16,18 +19,19 @@ Daily pipeline that collects **Google Jobs** results for **“data scientist”*
 - `data/` – raw and processed outputs (local or bucket)  
 
 ## Configuration & Data
-- **settings.yaml:** search params and budget caps  
-- **normalize_schema.json:** tracked core keys  
-- **Secrets:** `SERPAPI_KEY`, optional Telegram tokens  
-- **Output:** normalized Parquet-ready job records  
+- **settings.yaml:** Defines search parameters and request budget limits  
+- **normalize_schema.json:** Lists core fields tracked during normalization  
+- **Secrets:** Environment variables (`SERPAPI_KEY`)  
+- **Output:** Raw JSON and Parquet datasets of normalized job records   
 
 ## State & Automation
-Tracks seen jobs (`seen_jobs.sqlite`) to avoid duplicates.  
-Next: add state tracking, logging, and daily GitHub Action runs.
+- **Seen Jobs:** SQLite database (`seen_jobs.sqlite`) tracks previously scraped jobs to prevent duplicates  
+- **State Store:** Persists run metadata such as last reset date and carryover requests  
+- **Next Steps:** Add schedule daily runs via GitHub Actions  
 
 ## Roadmap
 - [x] Core modules  
-- [ ] State tracking & logging  
+- [x] State tracking & logging  
 - [ ] Telegram alerts  
 - [ ] Cloudflare R2 storage  
 - [ ] CI automation  
