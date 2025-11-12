@@ -1,6 +1,7 @@
 from pathlib import Path
-
 import sqlite3
+from source.logger import get_logger
+logger = get_logger()
 
 DEFAULT_SEEN_DB = "data/state/seen_jobs.sqlite"
 
@@ -97,4 +98,5 @@ def upsert_and_filter_uniques(
         "updated": updated,
         "touched": inserted + updated
     }
+    logger.info(f"Seen upsert: inserted={inserted}, updated={updated}, uniques={len(uniques)}")
     return uniques, stats
