@@ -52,5 +52,5 @@ def fetch_jobs(params: dict, today_cap: int, delay: float = 0.3) -> tuple[list[d
 
         time.sleep(delay)
 
-    stats = {"pages": used, "total_jobs": len(all_jobs), "reason": reason}
+    stats = {"requests_used": used, "total_jobs": len(all_jobs), "reason": reason}
     return all_jobs, stats
