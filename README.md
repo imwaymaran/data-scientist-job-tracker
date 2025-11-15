@@ -1,7 +1,7 @@
 # Data Scientist Job Tracker
 
 ## Overview
-Daily pipeline that collects **Google Jobs** results for **“data scientist”** in the **United States** via **SerpApi**, normalizes fields, de-duplicates across runs with a SQLite state file, and saves daily outputs for later analysis.
+Daily pipeline that uses **SerpApi** to fetch **Google Jobs** results for **“data scientist”** roles in a configurable location (currently: **New York, NY**), normalizes and de-duplicates them, and stores daily outputs for analysis.
 
 ## Architecture
 - **Scraper:** Fetches paginated job results via SerpApi with rate control  
