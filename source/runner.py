@@ -19,7 +19,8 @@ from source.state_store import (
     update_carryover,
 )
 from source.storage import save_raw_json, save_processed_parquet
-from source.summary import build_run_summary, print_run_summary
+from source.telegram_bot import send_telegram_message
+from source.summary import build_run_summary, print_run_summary, format_summary_for_telegram
 
 logger = get_logger()
 
@@ -120,6 +121,9 @@ def main():
             carryover=unused_today,
         )
         print_run_summary(summary)
+        
+        text = format_summary_for_telegram(summary)
+        send_telegram_message(text)
         
         logger.info("Run finished")
     
