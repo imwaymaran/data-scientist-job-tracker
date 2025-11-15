@@ -2,7 +2,7 @@ serpapi:
   api_key: SERPAPI_KEY
   engine: "google_jobs"
   q: "data scientist"
-  location: "United States"
+  location: "New York, NY, United States"
   gl: "us"
   hl: "en"
   chips: "date_posted:today"   # optional; deprecated but still works
