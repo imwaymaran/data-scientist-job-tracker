@@ -1,6 +1,8 @@
 from pathlib import Path
 import sqlite3
+
 from source.logger import get_logger
+
 logger = get_logger()
 
 DEFAULT_SEEN_DB = "data/state/seen_jobs.sqlite"

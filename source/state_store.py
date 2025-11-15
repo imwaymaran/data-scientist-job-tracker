@@ -1,6 +1,6 @@
-import sqlite3
 from pathlib import Path
 from datetime import date
+import sqlite3
 
 DEFAULT_STATE_DB = "data/state/run_state.sqlite"
 

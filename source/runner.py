@@ -1,14 +1,26 @@
 from datetime import date
-from source.config_loader import load_settings, get_serpapi_key, build_serpapi_params, load_core_keys
+
 from source.account import fetch_account_info
-from source.policies import calculate_cap, detect_reset
-from source.state_store import open_state_db, get_state, update_last_reset, update_carryover
-from source.scraper import fetch_jobs
+from source.config_loader import (
+    load_settings,
+    get_serpapi_key,
+    build_serpapi_params,
+    load_core_keys,
+)
+from source.logger import get_logger
 from source.normalize import normalize_batch
+from source.policies import calculate_cap, detect_reset
+from source.scraper import fetch_jobs
 from source.seen_store import open_seen_db, upsert_and_filter_uniques
+from source.state_store import (
+    open_state_db,
+    get_state,
+    update_last_reset,
+    update_carryover,
+)
 from source.storage import save_raw_json, save_processed_parquet
 from source.summary import build_run_summary, print_run_summary
-from source.logger import get_logger
+
 logger = get_logger()
 
 def main():

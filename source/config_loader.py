@@ -2,8 +2,8 @@ from pathlib import Path
 import os
 import yaml
 import json
-from .logger import get_logger
 
+from .logger import get_logger
 
 # ---------- PATHS ----------
 ROOT = Path(__file__).resolve().parents[1]

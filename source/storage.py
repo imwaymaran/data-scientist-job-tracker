@@ -2,7 +2,9 @@ from pathlib import Path
 import json
 import pyarrow as pa
 import pyarrow.parquet as pq
+
 from source.logger import get_logger
+
 logger = get_logger()
 
 RAW_DIR = Path("data/raw")

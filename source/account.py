@@ -1,7 +1,9 @@
 import requests
+
 from .config_loader import get_serpapi_key
 from .logger import get_logger
 
+logger = get_logger()
 
 ACCOUNT_URL = "https://serpapi.com/account"
 logger = get_logger()

@@ -1,6 +1,8 @@
-import requests
 import time
+import requests
+
 from source.logger import get_logger
+
 logger = get_logger()
 
 ENDPOINT = "https://serpapi.com/search.json"

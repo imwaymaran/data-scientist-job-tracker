@@ -1,22 +1,24 @@
-import re
 import hashlib
+import re
+
 from source.logger import get_logger
+
 logger = get_logger()
 
-def _clean_text(s):
+def _clean_text(s: str):
     """Trim extra whitespace and return None if the string is empty."""
     if not s:
         return None
     s = " ".join(str(s).split()).strip()
     return s or None
 
-def _norm_text(s):
+def _norm_text(s: str):
     """Normalize text to lowercase single-spaced form."""
     if not s: 
         return ""
     return " ".join(str(s).lower().split())
     
-def _desc_fingerprint(text):
+def _desc_fingerprint(text: str):
     """Return an MD5 fingerprint of description text for deduplication."""
     if not text: 
         return None
@@ -25,7 +27,13 @@ def _desc_fingerprint(text):
     t = re.sub(r"\s+", " ", t).strip()
     return hashlib.md5(t.encode("utf-8")).hexdigest()
 
-def _make_job_key(job_id, title, company, location, description_raw):
+def _make_job_key(
+    job_id: str, 
+    title: str, 
+    company: str, 
+    location: str, 
+    description_raw: str
+    ) -> str: 
     """Generate a stable job identifier based on job_id or text fingerprint."""
     if job_id:
         return f"id:{job_id}"
