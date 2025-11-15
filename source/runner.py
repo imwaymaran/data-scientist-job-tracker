@@ -20,7 +20,11 @@ from source.state_store import (
 )
 from source.storage import save_raw_json, save_processed_parquet
 from source.telegram_bot import send_telegram_message
-from source.summary import build_run_summary, print_run_summary, format_summary_for_telegram
+from source.summary import (
+    build_run_summary,
+    print_run_summary,
+    format_summary_for_telegram,
+)
 
 logger = get_logger()
 
@@ -53,7 +57,7 @@ def main():
         # ---- State + account
         state = get_state(state_conn)
         last_reset = state["last_reset"] 
-        carryover_requests  = state["carryover_requests"]
+        carryover_requests = state["carryover_requests"]
 
         quota, remaining, used = fetch_account_info()
         if detect_reset(quota, remaining, used):
@@ -71,7 +75,8 @@ def main():
             carryover_requests=carryover_requests,
         )
         if cap <= 0:
-            logger.info("Cap is 0 — skipping scrape.")
+            update_carryover(state_conn, 0)
+            logger.info("Cap is 0, skipping scrape.")
             summary = build_run_summary(
                 today=today_iso, cap=0, remaining_after=remaining,
                 scrape_state={"requests_used": 0, "total_jobs": 0, "reason": "cap_zero"},
@@ -79,6 +84,8 @@ def main():
                 carryover=0,
             )
             print_run_summary(summary)
+            text = format_summary_for_telegram(summary)
+            send_telegram_message(text)
             return
         logger.info(f"Cap computed: cap={cap} (remaining={remaining}, carryover={carryover_requests})")
         
@@ -101,7 +108,8 @@ def main():
         # ---- Store processed
         if uniques:  
             save_processed_parquet(uniques, today_iso)
-            logger.info(f"Stored {len(uniques)} unique normalized rows.")
+            logger.info(f"Normalized {len(normalized)} rows, stored {len(uniques)} uniques.")
+            
         else:
             logger.info("No unique rows to store.")
 
@@ -127,9 +135,6 @@ def main():
         
         logger.info("Run finished")
     
-    except Exception as e:
-        logger.exception(f"Pipeline failed: {e}")
-        raise
     finally:
         try:
             if seen_conn is not None:
@@ -138,4 +143,14 @@ def main():
             state_conn.close()
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except Exception as e:
+        logger.exception(f"Pipeline failed: {e}")
+        msg = (
+            "Job Tracker — pipeline FAILED\n"
+            f"Error type: {type(e).__name__}\n"
+            f"Message: {e}"
+        )
+        send_telegram_message(msg)
+        raise
