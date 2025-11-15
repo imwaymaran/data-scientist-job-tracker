@@ -46,6 +46,11 @@ def select_seen(conn: sqlite3.Connection, job_keys: list[str], chunk: int = 800)
         seen.update(r[0] for r in rows)
     return seen
 
+def count_total_seen(conn: sqlite3.Connection) -> int:
+    """Return total distinct job keys ever seen."""
+    row = conn.execute("SELECT COUNT(*) FROM job_seen").fetchone()
+    return row[0] if row else 0
+
 def insert_new_keys(conn: sqlite3.Connection, new_keys: list[str], today: str) -> int:
     """INSERT new keys with first_seen=last_seen=today."""
     new_keys = [k for k in new_keys if k]
