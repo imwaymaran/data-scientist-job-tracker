@@ -2,6 +2,7 @@ from pathlib import Path
 import logging
 import sys
 
+
 def get_logger(name: str = "jobtracker") -> logging.Logger:
     """
     Return a preconfigured logger that writes to logs/run.log and stdout.
