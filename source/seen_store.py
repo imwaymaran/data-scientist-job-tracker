@@ -78,14 +78,12 @@ def upsert_and_filter_uniques(
     Return only records not seen before; also insert new keys and update last_seen
     for previously seen keys. Writes are done in a single transaction.
     """
-    # Deduplicate within this batch by job_key
-    keyed: dict[str, dict] = {}
+    keyed = {}
     for record in records:
         k = record.get("job_key")
         if not k:
             continue
         if k in keyed:
-            # duplicate in same batch; skip
             continue
         keyed[k] = record
 
@@ -93,16 +91,13 @@ def upsert_and_filter_uniques(
     if not keys:
         return [], {"already_seen": 0, "inserted": 0, "updated": 0}
 
-    # Check which keys are already in the DB
     seen = select_seen(conn, keys)
     new_keys = [k for k in keys if k not in seen]
     existing_keys = [k for k in keys if k in seen]
 
-    # Records that are truly new this run
     uniques = [keyed[k] for k in new_keys]
     already_seen = len(existing_keys)
 
-    # Upsert in a single transaction
     with conn:
         inserted = insert_new_keys(conn, new_keys, today)
         updated = update_existing_keys(conn, existing_keys, today)
