@@ -51,10 +51,6 @@ def fetch_jobs(params: dict, today_cap: int, delay: float = 0.3) -> tuple[list[d
 
         all_jobs.extend(jobs)
 
-        if len(jobs) < 10:
-            reason = f"tail_page_{used}"
-            logger.info(f"Tail page with {len(jobs)} jobs at page {used}")
-            break
         if not token:
             reason = f"no_next_page_{used}"
             logger.info(f"No next_page_token after page {used}")
