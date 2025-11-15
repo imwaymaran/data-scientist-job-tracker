@@ -9,6 +9,7 @@ def build_run_summary(
     scrape_state: dict,
     seen_stats: dict,
     carryover: int,
+    total_seen: int = 0,
 ) -> dict:
     """Assemble a standardized daily run summary dictionary."""
     used = scrape_state.get("requests_used", 0)
@@ -16,7 +17,6 @@ def build_run_summary(
     inserted = seen_stats.get("inserted", 0)
     touched = seen_stats.get("touched", 0)
     reason = scrape_state.get("reason", "n/a")
-    remaining_quota = max(0, remaining_after - used)
 
     return {
         "date": today,
@@ -27,8 +27,9 @@ def build_run_summary(
         "normalized": touched,
         "uniques": inserted,
         "carryover": carryover,
-        "remaining_quota": remaining_quota
-    }  
+        "remaining_after": remaining_after,
+        "total_seen": total_seen,
+    }
     
 def print_run_summary(summary: dict):
     """Log a formatted one-line summary of the daily pipeline run."""
@@ -41,8 +42,9 @@ def print_run_summary(summary: dict):
         f"jobs={summary.get('total_jobs')} "
         f"normalized={summary.get('normalized')} "
         f"uniques={summary.get('uniques')} "
+        f"total_seen={summary.get('total_seen')} "
         f"carryover={summary.get('carryover')} "
-        f"remaining quota={summary.get('remaining_quota')} "
+        f"remaining_after={summary.get('remaining_after')} "
     )
     
 def format_summary_for_telegram(summary: dict) -> str:
@@ -56,5 +58,6 @@ def format_summary_for_telegram(summary: dict) -> str:
         f"Jobs scraped: {summary.get('total_jobs')}\n"
         f"Normalized: {summary.get('normalized')}\n"
         f"Uniques stored: {summary.get('uniques')}\n"
-        f"Carryover: {summary.get('carryover')}\n"
+        f"Total seen overall: {summary.get('total_seen')}\n"
+        f"Carryover to tomorrow: {summary.get('carryover')}\n"
     )

@@ -11,7 +11,11 @@ from source.logger import get_logger
 from source.normalize import normalize_batch
 from source.policies import calculate_cap, detect_reset
 from source.scraper import fetch_jobs
-from source.seen_store import open_seen_db, upsert_and_filter_uniques
+from source.seen_store import (
+    open_seen_db, 
+    upsert_and_filter_uniques, 
+    count_total_seen
+)
 from source.state_store import (
     open_state_db,
     get_state,
@@ -76,12 +80,14 @@ def main():
         )
         if cap <= 0:
             update_carryover(state_conn, 0)
+            total_seen = count_total_seen(seen_conn)
             logger.info("Cap is 0, skipping scrape.")
             summary = build_run_summary(
                 today=today_iso, cap=0, remaining_after=remaining,
                 scrape_state={"requests_used": 0, "total_jobs": 0, "reason": "cap_zero"},
                 seen_stats={"touched": 0, "inserted": 0, "updated": 0},
                 carryover=0,
+                total_seen=total_seen
             )
             print_run_summary(summary)
             text = format_summary_for_telegram(summary)
@@ -120,6 +126,8 @@ def main():
         
         remaining_after = max(0, remaining - requests_used)
         
+        total_seen = count_total_seen(seen_conn)
+        
         summary = build_run_summary(
             today=today_iso,
             cap=cap,
@@ -127,6 +135,7 @@ def main():
             scrape_state=scrape_state,
             seen_stats=seen_stats,
             carryover=unused_today,
+            total_seen=total_seen,
         )
         print_run_summary(summary)
         
