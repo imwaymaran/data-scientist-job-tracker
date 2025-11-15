@@ -44,3 +44,17 @@ def print_run_summary(summary: dict):
         f"carryover={summary.get('carryover')} "
         f"remaining quota={summary.get('remaining_quota')} "
     )
+    
+def format_summary_for_telegram(summary: dict) -> str:
+    """Return a compact Telegram-friendly summary message."""
+    return (
+        f"*Job Tracker — Daily Run*\n"
+        f"Date: {summary.get('date')}\n"
+        f"Cap: {summary.get('cap')}\n"
+        f"Requests used: {summary.get('requests_used')}\n"
+        f"Reason: {summary.get('stop_reason')}\n"
+        f"Jobs scraped: {summary.get('total_jobs')}\n"
+        f"Normalized: {summary.get('normalized')}\n"
+        f"Uniques stored: {summary.get('uniques')}\n"
+        f"Carryover: {summary.get('carryover')}\n"
+    )
