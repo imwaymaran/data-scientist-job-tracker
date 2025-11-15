@@ -38,13 +38,13 @@ def print_run_summary(summary: dict):
         f"date={summary.get('date')} "
         f"cap={summary.get('cap')} "
         f"used={summary.get('requests_used')} "
+        f"remaining_after={summary.get('remaining_after')} "
         f"reason={summary.get('stop_reason')} "
         f"jobs={summary.get('total_jobs')} "
         f"normalized={summary.get('normalized')} "
         f"uniques={summary.get('uniques')} "
         f"total_seen={summary.get('total_seen')} "
         f"carryover={summary.get('carryover')} "
-        f"remaining_after={summary.get('remaining_after')} "
     )
     
 def format_summary_for_telegram(summary: dict) -> str:
@@ -54,6 +54,7 @@ def format_summary_for_telegram(summary: dict) -> str:
         f"Date: {summary.get('date')}\n"
         f"Cap: {summary.get('cap')}\n"
         f"Requests used: {summary.get('requests_used')}\n"
+        f"Remaining after run: {summary.get('remaining_after')}\n"
         f"Reason: {summary.get('stop_reason')}\n"
         f"Jobs scraped: {summary.get('total_jobs')}\n"
         f"Normalized: {summary.get('normalized')}\n"
