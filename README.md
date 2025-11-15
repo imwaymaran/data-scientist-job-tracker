@@ -32,8 +32,8 @@ Daily pipeline that collects **Google Jobs** results for **“data scientist”*
 ## Roadmap
 - [x] Core modules  
 - [x] State tracking & logging  
-- [ ] Telegram alerts  
-- [ ] Cloudflare R2 storage  
+- [x] Telegram alerts  
+- [x] Cloudflare R2 storage  
 - [ ] CI automation  
 
 ## License
