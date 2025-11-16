@@ -1,0 +1,65 @@
+name: Daily Job Tracker
+
+on:
+  schedule:
+    # Runs every day at 13:00 UTC (8 AM in NYC during standard time, 9 AM during daylight saving)
+    - cron: "0 13 * * *"
+  workflow_dispatch: {}
+
+jobs:
+  run-pipeline:
+    runs-on: ubuntu-latest
+
+    env:
+      SERPAPI_KEY: ${{ secrets.SERPAPI_KEY }}
+      TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+      TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      R2_BUCKET: ${{ secrets.CLOUDFLARE_R2_BUCKET }}
+
+      AWS_ACCESS_KEY_ID: ${{ secrets.CLOUDFLARE_R2_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.CLOUDFLARE_R2_SECRET_ACCESS_KEY }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Ensure local directories
+        run: |
+          mkdir -p data/state data/raw data/processed
+
+      - name: Install AWS CLI
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y awscli
+
+      - name: Download state from R2
+        run: |
+          aws s3 sync "s3://$R2_BUCKET/state" data/state \
+            --endpoint-url "https://$CLOUDFLARE_ACCOUNT_ID.r2.cloudflarestorage.com" || true
+
+      - name: Run job tracker pipeline
+        run: python -m source.runner
+
+      - name: Upload state + new outputs to R2
+        if: always()
+        run: |
+          aws s3 sync data/state "s3://$R2_BUCKET/state" \
+            --endpoint-url "https://$CLOUDFLARE_ACCOUNT_ID.r2.cloudflarestorage.com"
+
+          aws s3 sync data/raw "s3://$R2_BUCKET/raw" \
+            --endpoint-url "https://$CLOUDFLARE_ACCOUNT_ID.r2.cloudflarestorage.com"
+
+          aws s3 sync data/processed "s3://$R2_BUCKET/processed" \
+            --endpoint-url "https://$CLOUDFLARE_ACCOUNT_ID.r2.cloudflarestorage.com"
