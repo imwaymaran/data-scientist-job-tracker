@@ -1,6 +1,11 @@
+from pathlib import Path
+import json
+
 from source.logger import get_logger
 
 logger = get_logger()
+
+SUMMARY_JSON = Path("data/meta/last_summary.json")
 
 def build_run_summary(
     today: str | None,
@@ -62,3 +67,12 @@ def format_summary_for_telegram(summary: dict) -> str:
         f"Total seen overall: {summary.get('total_seen')}\n"
         f"Carryover to tomorrow: {summary.get('carryover')}\n"
     )
+    
+def save_summary_json(summary: dict):
+    """
+    Save the run summary as JSON for the README stats updater.
+    """
+    SUMMARY_JSON.parent.mkdir(parents=True, exist_ok=True)
+    with SUMMARY_JSON.open("w", encoding="utf-8") as f:
+        json.dump(summary, f, ensure_ascii=False, indent=2)
+    logger.info(f"Saved summary JSON to {SUMMARY_JSON}")
