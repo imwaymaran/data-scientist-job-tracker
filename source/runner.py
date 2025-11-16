@@ -28,6 +28,7 @@ from source.summary import (
     build_run_summary,
     print_run_summary,
     format_summary_for_telegram,
+    save_summary_json
 )
 
 logger = get_logger()
@@ -139,6 +140,8 @@ def main():
         
         text = format_summary_for_telegram(summary)
         send_telegram_message(text)
+        
+        save_summary_json(summary)
         
         logger.info("Run finished")
     
