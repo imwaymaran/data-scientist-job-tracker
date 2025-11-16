@@ -123,6 +123,7 @@ def main():
         unused_today = max(0, cap - requests_used)
         update_carryover(state_conn, unused_today)
         
+        # ---- Summary
         remaining_after = max(0, remaining - requests_used)
         
         total_seen = count_total_seen(seen_conn)
