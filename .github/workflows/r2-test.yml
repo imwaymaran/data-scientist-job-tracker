@@ -1,0 +1,30 @@
+name: Test R2 upload
+
+on:
+  workflow_dispatch:  # run manually from the Actions tab
+
+jobs:
+  r2-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo (optional, but harmless)
+        uses: actions/checkout@v4
+
+      - name: Create test file
+        run: echo "R2 test from GitHub Actions at $(date)" > r2_test.txt
+
+      - name: Install AWS CLI
+        run: pip install awscli
+
+      - name: Upload file to Cloudflare R2
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.CLOUDFLARE_R2_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.CLOUDFLARE_R2_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: us-east-1
+          R2_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          R2_BUCKET: ${{ secrets.CLOUDFLARE_R2_BUCKET }}
+        run: |
+          ENDPOINT="https://${R2_ACCOUNT_ID}.r2.cloudflarestorage.com"
+          echo "Using endpoint: $ENDPOINT"
+          aws s3 cp r2_test.txt s3://${R2_BUCKET}/test/github-r2-test.txt --endpoint-url "$ENDPOINT"
