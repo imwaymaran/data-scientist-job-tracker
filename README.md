@@ -10,7 +10,7 @@ Daily automated pipeline that tracks **Data Scientist job postings** and keeps a
 
 | Metric                 | Value |
 |------------------------|-------|
-| Total jobs tracked     | 97 |
+| Total jobs tracked     | 412 |
 | Jobs collected today   | 97 |
 | New unique roles today | 96 |
 <!-- STATS_END -->
