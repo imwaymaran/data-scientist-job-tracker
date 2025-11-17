@@ -112,7 +112,7 @@ Code: [`source/telegram_bot.py`](source/telegram_bot.py), [`source/runner.py`](s
 │   ├── seen_store.py              # SQLite store for deduplication
 │   ├── state_store.py             # Track resets + carryover state
 │   ├── storage.py                 # Save JSON/Parquet
-│   ├── summary.py                 # Summary builder + Telegram formatter
+│   ├── summary.py                 # Summary builder + Telegram formatter 
 │   ├── telegram_bot.py            # Telegram notifications
 │   ├── update_readme_stats.py     # Update README "Daily Stats" section after each run
 │   └── runner.py                  # Pipeline orchestrator
