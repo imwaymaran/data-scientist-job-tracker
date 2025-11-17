@@ -1,13 +1,19 @@
 # Data Scientist Job Tracker
 
-A daily automated pipeline that tracks **Data Scientist job postings** and keeps a clean, **structured dataset** for long-term analysis.
+Daily automated pipeline that tracks **Data Scientist job postings** and keeps a clean, **structured dataset** for long-term analysis.
 
 ## Daily Stats
 *(Updated automatically every day)*  
 
-**Total jobs tracked:** —  
-**Jobs collected today:** —  
-**New unique roles today:** — 
+<!-- STATS_START -->
+**Last run:** Nov 16, 2025 at 07:00 PM EST  
+
+| Metric                 | Value |
+|------------------------|-------|
+| Total jobs tracked     | 97 |
+| Jobs collected today   | 97 |
+| New unique roles today | 96 |
+<!-- STATS_END -->
 
 ## Overview
 
