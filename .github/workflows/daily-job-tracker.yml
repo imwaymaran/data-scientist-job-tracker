@@ -13,7 +13,7 @@ jobs:
       contents: write
 
     env:
-      SERPAPI_KEY: ${{ secrets.SERPAPI_KEY }}
+      SERPAPI_KEY: ${{ secrets.SERPAPI_KEY }} 
       TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
       TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
 
