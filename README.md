@@ -6,13 +6,13 @@ Daily automated pipeline that tracks **Data Scientist job postings** and keeps a
 *(Updated automatically every day)*  
 
 <!-- STATS_START -->
-**Last run:** Mar 25, 2026 at 10:00 AM EDT  
+**Last run:** Mar 26, 2026 at 10:00 AM EDT  
 
 | Metric                 | Value |
 |------------------------|-------|
-| Total jobs tracked     | 5208 |
-| Jobs collected today   | 10 |
-| New unique roles today | 10 |
+| Total jobs tracked     | 5225 |
+| Jobs collected today   | 20 |
+| New unique roles today | 17 |
 <!-- STATS_END -->
 
 ## Overview
