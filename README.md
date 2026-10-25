@@ -6,7 +6,7 @@ Daily automated pipeline that tracks **Data Scientist job postings** and keeps a
 *(Updated automatically every day)*  
 
 <!-- STATS_START -->
-**Last run:** Oct 24, 2026 at 12:00 PM EDT  
+**Last run:** Oct 25, 2026 at 12:00 PM EDT  
 
 | Metric                 | Value |
 |------------------------|-------|
